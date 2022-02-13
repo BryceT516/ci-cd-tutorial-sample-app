@@ -24,9 +24,15 @@ jobs:
           # Password or personal access token used to log against the Docker registry
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           # Specifies whether the given registry is ECR (auto, true or false)
-          ecr: auto
+#           ecr: auto
           # Log out from the Docker registry at the end of a job
 #           logout: # optional, default is true
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: brycet516/learning_github_actions
 
       - name: Build and push Docker images
         # You may pin to the exact commit or the version.
@@ -76,7 +82,7 @@ jobs:
           # List of SSH agent socket or keys to expose to the build
 #           ssh: # optional
           # List of tags
-          tags: brycet516/learning_github_actions:latest
+          tags: ${{ steps.meta.outputs.tags }}
           # Sets the target stage to build
 #           target: # optional
           # Ulimit options (e.g., nofile=1024:1024)
